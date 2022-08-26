@@ -1,7 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:mailer/smtp_server/gmail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'api_service.dart';
+import 'package:mailer/mailer.dart';
+class loginScreen extends StatefulWidget{
 
-class LoginScreen extends StatelessWidget{
-  const LoginScreen({Key? key}) : super(key: key);
+  @override
+  _loginScreenState createState() => _loginScreenState();
+
+}
+
+class _loginScreenState extends State<loginScreen> {
+  ApiService apiService= ApiService();
+  List<dynamic> domainList = [];
+  @override
+  void initState() {
+    setState(() {
+      createLoginApiCall();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +49,7 @@ class LoginScreen extends StatelessWidget{
                 ),
 
                 //sign in button & sign in with text
-                signInButton(size),
+                signUpButton(size),
                 SizedBox(
                   height: size.height * 0.02,
                 )
@@ -112,7 +130,7 @@ class LoginScreen extends StatelessWidget{
     );
   }
 
-  Widget signInButton(Size size) {
+  Widget signUpButton(Size size) {
     return Container(
       alignment: Alignment.center,
       height: size.height / 11,
@@ -128,9 +146,21 @@ class LoginScreen extends StatelessWidget{
         ],
       ),
       child: const Text(
-        'Sign in',
+        'Login',
         textAlign: TextAlign.center,
       ),
     );
   }
+
+  void createLoginApiCall() async{
+    print('>>>>>>>>> '+ 'go');
+    final loginData = await apiService.loginCall('imtiaz6@arxxwalls.com', 'password');
+    if (loginData != null) {
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      await sharedPreferences.setString('token', 'Bearer '+loginData.token.toString());
+      print('loginData'+ loginData.id.toString());
+      setState(() {});
+    }
+  }
+
 }

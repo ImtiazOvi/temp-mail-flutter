@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:temp_mail_flutter/account.dart';
 import 'package:temp_mail_flutter/domain_response.dart';
+import 'package:temp_mail_flutter/loginResponse.dart';
 
 import 'createAccountRes.dart';
 class ApiService{
@@ -51,7 +52,35 @@ class ApiService{
     }
   }
 
+  Future<LoginResponse?> loginCall(
+      String address,
+      String password,
+      ) async {
 
+    var body = jsonEncode({
+      "address": address,
+      "password": password
+    });
+
+    String fullUrl = baseUrl+'token';
+    print("URL = " + fullUrl);
+    print("formData = " + body.toString());
+
+    final accountData = await http.post(Uri.parse(fullUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+      body: body,
+    );
+    print("URL = " + fullUrl);
+    print("loginResponse res = " + accountData.body);
+    if (accountData.statusCode == 200) {
+      return LoginResponse.fromJson(jsonDecode(accountData.body));
+    } else {
+      return null;
+    }
+  }
   // Future<Status?> CurrentStatus(token) async{
   //   print("Api_Service: "+token);
   //   try{

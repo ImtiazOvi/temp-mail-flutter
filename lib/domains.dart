@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:temp_mail_flutter/account.dart';
 import 'api_service.dart';
+import 'login.dart';
 class DomainScreen extends StatefulWidget {
 
   @override
@@ -30,7 +31,12 @@ class _DomainScreenState extends State<DomainScreen> {
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context) => AccountScreen(domainName!)));
             },
-            child: Text('Create Account'),)
+            child: Text('Create Account'),),
+          InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => loginScreen()));
+            },
+            child: Text('Login Account'),)
         ]
         ,
       )
