@@ -127,7 +127,7 @@ class LoginScreen extends StatelessWidget{
           ),
         ],
       ),
-      child: Text(
+      child: const Text(
         'Sign in',
         textAlign: TextAlign.center,
       ),

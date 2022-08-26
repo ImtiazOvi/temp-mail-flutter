@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:temp_mail_flutter/login.dart';
 import 'package:temp_mail_flutter/account.dart';
+import 'package:temp_mail_flutter/domains.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home: DomainScreen(),
     );
   }
 }
