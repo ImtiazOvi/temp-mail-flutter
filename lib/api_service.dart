@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
-import 'package:temp_mail_flutter/account.dart';
-import 'package:temp_mail_flutter/domain_response.dart';
 import 'package:temp_mail_flutter/loginResponse.dart';
 
 import 'createAccountRes.dart';
@@ -81,27 +79,19 @@ class ApiService{
       return null;
     }
   }
-  // Future<Status?> CurrentStatus(token) async{
-  //   print("Api_Service: "+token);
-  //   try{
-  //     var response = await http.post(
-  //         Uri.parse(baseUrl+"applicationStatus"),
-  //         headers: {
-  //           "Authorization": "Bearer "+token
-  //         }
-  //
-  //     );
-  //     if(response.statusCode == 200){
-  //       //success
-  //       print("Registration: "+response.body);
-  //       return Status.fromJson(jsonDecode(response.body));;
-  //     }else{
-  //       print("resCode: "+ response.statusCode.toString());
-  //       return null;
-  //     }
-  //   }catch(e){
-  //     print("resError: "+ e.toString());
-  //     return null;
-  //   }
-  // }
+  Future<dynamic> getMessageList(String token) async {
+    print(">>>>>>>>>URL = " + token);
+    String fullUrl = baseUrl+'messages';
+    var dio = Dio();
+    dio.options.headers["Authorization"] = token.toString();
+    dio.options.headers["Content-Type"] = "application/json";
+    final messageData = await dio.get(fullUrl);
+    print("message_URL = " + token);
+    print("message_respponse = " + messageData.toString());
+    if (messageData.statusCode == 200) {
+      return messageData.data;
+    } else {
+      return 'null';
+    }
+  }
 }

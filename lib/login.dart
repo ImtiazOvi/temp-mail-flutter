@@ -3,6 +3,8 @@ import 'package:mailer/smtp_server/gmail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'api_service.dart';
 import 'package:mailer/mailer.dart';
+
+import 'message.dart';
 class loginScreen extends StatefulWidget{
 
   @override
@@ -49,7 +51,7 @@ class _loginScreenState extends State<loginScreen> {
                 ),
 
                 //sign in button & sign in with text
-                signUpButton(size),
+                loginButton(size),
                 SizedBox(
                   height: size.height * 0.02,
                 )
@@ -130,7 +132,7 @@ class _loginScreenState extends State<loginScreen> {
     );
   }
 
-  Widget signUpButton(Size size) {
+  Widget loginButton(Size size) {
     return Container(
       alignment: Alignment.center,
       height: size.height / 11,
@@ -145,10 +147,11 @@ class _loginScreenState extends State<loginScreen> {
           ),
         ],
       ),
-      child: const Text(
-        'Login',
-        textAlign: TextAlign.center,
-      ),
+      child: InkWell(
+        onTap: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MessageScreen()));
+        },
+        child: Text('Login'),)
     );
   }
 

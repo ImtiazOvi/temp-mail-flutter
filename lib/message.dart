@@ -1,54 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'api_service.dart';
+class MessageScreen extends StatefulWidget {
 
-class MessageScreen extends StatelessWidget{
-  const MessageScreen({Key? key}) : super(key: key);
+  @override
+  _MessageScreenState createState() => _MessageScreenState();
+
+}
+
+class _MessageScreenState extends State<MessageScreen> {
+  ApiService apiService = ApiService();
+  List<dynamic> domainList = [];
+  String? domainName;
+  String? token;
+  @override
+  void initState() {
+    setState(() {
+      print('message page>>>>>>>>>>>>>>>>>>>>>>');
+      messageApiCall();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                richText(24),
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+    return SafeArea(
+        child:  Scaffold(
+          body: Column(
+            children: [
+             //List builder task
+            ]
+            ,
+          )
+          ,
+        ));
   }
 
-
-  Widget richText(double fontSize) {
-    return const Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(
-            text: 'Message ',
-            style: TextStyle(
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          TextSpan(
-            text: 'List',
-            style: TextStyle(
-              color: Color(0xFFFE9879),
-              fontWeight: FontWeight.w800,
-            ),
-          )
-        ],
-      ),
-      textAlign: TextAlign.center,
-    );
+  void messageApiCall() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    token = sharedPreferences.getString('token')!;
+    print('data_token' + token.toString());
+    final messageData = await apiService.getMessageList(token.toString());
+    if (messageData != 'null') {
+      //messageList = messageData['hydra:member'];
+      print('data_message' + messageData['@type'].toString());
+      setState(() {});
+    }
   }
 }
