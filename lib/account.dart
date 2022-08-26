@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:mailer/smtp_server/gmail.dart';
+import 'api_service.dart';
+import 'package:mailer/mailer.dart';
+class AccountScreen extends StatefulWidget{
+  String domainName;
+  AccountScreen(this.domainName);
 
-class CreateAccount extends StatelessWidget {
-  const CreateAccount({Key? key}) : super(key: key);
+
+  @override
+  _AccountScreenState createState() => _AccountScreenState();
+
+}
+
+class _AccountScreenState extends State<AccountScreen> {
+  ApiService apiService= ApiService();
+  List<dynamic> domainList = [];
+  @override
+  void initState() {
+    setState(() {
+      createAccountApiCall();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,5 +152,38 @@ class CreateAccount extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
     );
+  }
+
+  void createAccountApiCall() async{
+    print('>>>>>>>>> '+ 'go');
+    final accountData = await apiService.createAccountCall('imtiaz7@arxxwalls.com', 'password');
+    if (accountData != null) {
+      // sending mail
+      sendEmail();
+      print('data_account'+ accountData.address.toString());
+      setState(() {});
+    }
+  }
+
+  void sendEmail() async{
+    print('>>>>>>>>> '+ 'go');
+    final smtpServer = gmail('imtiaztemp020@gmail.com', 'Pa55W0rd');
+
+    final message = Message()
+      ..from = Address('imtiazovi020@gmail.com', 'Imtiaz')
+      ..recipients.add('imtiaz111@'+widget.domainName)
+      ..subject = 'Hello testing'
+      ..text = 'testing message from sender';
+
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
+    }
   }
 }

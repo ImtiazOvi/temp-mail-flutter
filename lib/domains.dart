@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:temp_mail_flutter/account.dart';
 import 'api_service.dart';
-import 'domain_response.dart';
-
-class DomainScreen extends StatefulWidget{
+class DomainScreen extends StatefulWidget {
 
   @override
   _DomainScreenState createState() => _DomainScreenState();
@@ -10,8 +9,9 @@ class DomainScreen extends StatefulWidget{
 }
 
 class _DomainScreenState extends State<DomainScreen> {
-  ApiService apiService= ApiService();
+  ApiService apiService = ApiService();
   List<dynamic> domainList = [];
+  String? domainName;
   @override
   void initState() {
     setState(() {
@@ -22,20 +22,28 @@ class _DomainScreenState extends State<DomainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    return SafeArea(
+        child:  Scaffold(
+          body: Column(
         children: [
-
-        ],
-      ),
-    );
+          InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AccountScreen(domainName!)));
+            },
+            child: Text('Create Account'),)
+        ]
+        ,
+      )
+      ,
+    ));
   }
 
-  void domainListApiCall() async{
+  void domainListApiCall() async {
     final domainData = await apiService.getDomainList();
     if (domainData != 'null') {
       domainList = domainData['hydra:member'];
-      print('data'+ domainList[0]['domain']);
+      domainName = domainList[0]['domain'];
+      print('data' + domainList[0]['domain']);
       setState(() {});
     }
   }
