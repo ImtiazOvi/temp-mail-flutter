@@ -16,6 +16,11 @@ A new Flutter project.
 - Login - Login registred user and get a Bearer Token and save that token in Sharedpreferences for next auth api calling.
 - Message - Using Bearer Token call message api then get the message list
 
+# Libaries used
+ - http: ^0.13.4
+ - dio: ^4.0.4
+ - mailer: ^5.2.0
+ - shared_preferences: ^2.0.15
 
 # Used technologies
  - Flutter 
