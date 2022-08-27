@@ -12,8 +12,7 @@ class MessageScreen extends StatefulWidget {
 
 class _MessageScreenState extends State<MessageScreen> {
   ApiService apiService = ApiService();
-  List<dynamic> domainList = [];
-  String? domainName;
+  List<dynamic> messageList = [];
   String? token;
   @override
   void initState() {
@@ -25,17 +24,69 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child:  Scaffold(
-          body: Column(
-            children: [
-             //List builder task
-            ]
-            ,
+    final size = MediaQuery.of(context).size;
+
+    return Scaffold(
+      body: Column(
+        children: [
+          SizedBox(
+            height: size.height * 0.03,
+          ),
+          richText(),
+
+          Expanded(
+              child: ListView.builder(
+                itemCount: 1,
+                itemBuilder: (context, index) =>
+                    Card(
+                      color: Colors.grey,
+                      elevation: 6,
+                      margin: const EdgeInsets.all(20),
+                      child: ListTile(
+                        title: Text("To: imtiaztemp020@gmail.com \nFrom: imtiaz123@arxxwalls.com"),
+                        subtitle: Text("Subject: Hello User \nBody: Welcome message from sender"),
+                      ),
+                    ),
+              )
           )
-          ,
-        ));
+
+        ],
+      ),
+    );
+
   }
+
+  Widget richText() {
+    return const Text.rich(
+      TextSpan(
+        children: [
+          // add a space between texts
+          WidgetSpan(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 48.0),
+            ),
+          ),
+
+          TextSpan(
+            text: 'Message ',
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          TextSpan(
+            text: 'List',
+            style: TextStyle(
+              color: Color(0xFFFE9879),
+              fontWeight: FontWeight.w800,
+            ),
+          )
+        ],
+      ),
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 24)
+    );
+  }
+
 
   void messageApiCall() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
