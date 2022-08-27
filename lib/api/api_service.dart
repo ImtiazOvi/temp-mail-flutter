@@ -8,11 +8,11 @@ class ApiService{
   String baseUrl = "https://api.mail.tm/";
 
   Future<dynamic> getDomainList() async {
-    String fullUrl = baseUrl+'domains';
+    String fullUrl = '${baseUrl}domains';
     var dio = Dio();
     final hydraMember = await dio.get(fullUrl);
-    print("hydraMember_URL = " + fullUrl);
-    print("hydraMember_Response = " + hydraMember.toString());
+    print("hydraMember_URL = $fullUrl");
+    print("hydraMember_Response = $hydraMember");
     if (hydraMember.statusCode == 200) {
       return hydraMember.data;
     } else {
@@ -30,9 +30,9 @@ class ApiService{
       "password": password
     });
 
-    String fullUrl = baseUrl+'accounts';
-    print("URL = " + fullUrl);
-    print("formData = " + body.toString());
+    String fullUrl = '${baseUrl}accounts';
+    print("URL = $fullUrl");
+    print("formData = $body");
 
     final accountData = await http.post(Uri.parse(fullUrl),
       headers: <String, String>{
@@ -41,8 +41,8 @@ class ApiService{
       },
       body: body,
     );
-    print("URL = " + fullUrl);
-    print("createAccountResponse res = " + accountData.body);
+    print("URL = $fullUrl");
+    print("createAccountResponse res = ${accountData.body}");
     if (accountData.statusCode == 201) {
       return CreateAccountResponse.fromJson(jsonDecode(accountData.body));
     } else {
@@ -60,9 +60,9 @@ class ApiService{
       "password": password
     });
 
-    String fullUrl = baseUrl+'token';
-    print("URL = " + fullUrl);
-    print("formData = " + body.toString());
+    String fullUrl = '${baseUrl}token';
+    print("URL = $fullUrl");
+    print("formData = $body");
 
     final accountData = await http.post(Uri.parse(fullUrl),
       headers: <String, String>{
@@ -71,8 +71,8 @@ class ApiService{
       },
       body: body,
     );
-    print("URL = " + fullUrl);
-    print("loginResponse res = " + accountData.body);
+    print("URL = $fullUrl");
+    print("loginResponse res = ${accountData.body}");
     if (accountData.statusCode == 200) {
       return LoginResponse.fromJson(jsonDecode(accountData.body));
     } else {
@@ -80,14 +80,13 @@ class ApiService{
     }
   }
   Future<dynamic> getMessageList(String token) async {
-    print(">>>>>>>>>URL = " + token);
-    String fullUrl = baseUrl+'messages';
+    print(">>>>>>>>>Token = $token");
+    String fullUrl = '${baseUrl}messages';
     var dio = Dio();
     dio.options.headers["Authorization"] = token.toString();
     dio.options.headers["Content-Type"] = "application/json";
     final messageData = await dio.get(fullUrl);
-    print("message_URL = " + token);
-    print("message_respponse = " + messageData.toString());
+    print("message_response = $messageData");
     if (messageData.statusCode == 200) {
       return messageData.data;
     } else {

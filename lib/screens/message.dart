@@ -18,7 +18,6 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   void initState() {
     setState(() {
-      print('message page>>>>>>>>>>>>>>>>>>>>>>');
       messageApiCall();
     });
     super.initState();
@@ -41,11 +40,11 @@ class _MessageScreenState extends State<MessageScreen> {
   void messageApiCall() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString('token')!;
-    print('data_token' + token.toString());
+    print('data_token$token');
     final messageData = await apiService.getMessageList(token.toString());
     if (messageData != 'null') {
       //messageList = messageData['hydra:member'];
-      print('data_message' + messageData['@type'].toString());
+      print('data_message${messageData['@type']}');
       setState(() {});
     }
   }

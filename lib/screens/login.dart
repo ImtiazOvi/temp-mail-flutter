@@ -154,12 +154,11 @@ class _loginScreenState extends State<loginScreen> {
   }
 
   void createLoginApiCall() async{
-    print('>>>>>>>>> '+ 'go');
     final loginData = await apiService.loginCall('imtiaz6@arxxwalls.com', 'password');
     if (loginData != null) {
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      await sharedPreferences.setString('token', 'Bearer '+loginData.token.toString());
-      print('loginData'+ loginData.id.toString());
+      await sharedPreferences.setString('token', 'Bearer ${loginData.token}');
+      print('loginData${loginData.id}');
       setState(() {});
     }
   }

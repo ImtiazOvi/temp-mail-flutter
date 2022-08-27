@@ -23,26 +23,97 @@ class _DomainScreenState extends State<DomainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child:  Scaffold(
-          body: Column(
-        children: [
-          InkWell(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AccountScreen(domainName!)));
-            },
-            child: Text('Create Account'),),
-          InkWell(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => loginScreen()));
-            },
-            child: Text('Login Account'),)
-        ]
-        ,
-      )
-      ,
-    ));
+    final size = MediaQuery.of(context).size;
+
+    return Scaffold(
+        body: Column(
+            children: [
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              navigateToLoginButton(size),
+
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              richText(),
+
+              Expanded(
+                  child: ListView.builder(
+                    itemCount: domainList.length,
+                    itemBuilder: (context, index) =>
+                        Card(
+                          color: Colors.grey,
+                          elevation: 6,
+                          margin: const EdgeInsets.all(10),
+                          child: ListTile(
+                            title: Text("Domain: "+domainList[index]['domain']),
+                            subtitle: Text("Id: "+domainList[index]['id']),
+                          ),
+                        ),
+                  )
+              )
+
+            ],
+        ),
+    );
+
   }
+
+  Widget navigateToLoginButton(Size size) {
+    return Container(
+      alignment: Alignment.center,
+      height: size.height / 11,
+      margin: const EdgeInsets.only(left: 24.0, top: 16.0, right: 24.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(0.0),
+        color: const Color(0xFF21899C),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF4C2E84).withOpacity(0.2),
+            offset: const Offset(0, 15.0),
+            blurRadius: 60.0,
+          ),
+        ],
+      ),
+    child: InkWell(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AccountScreen(domainName!)));
+      },
+      child: const Text(
+        'Login Account',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+    )
+
+    );
+  }
+
+  Widget richText() {
+    return const Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: 'Domain ',
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          TextSpan(
+            text: 'List',
+            style: TextStyle(
+              color: Color(0xFFFE9879),
+              fontWeight: FontWeight.w800,
+            ),
+          )
+        ],
+      ),
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 24),
+    );
+  }
+
 
   void domainListApiCall() async {
     final domainData = await apiService.getDomainList();
