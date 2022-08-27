@@ -3,6 +3,7 @@ import 'package:mailer/smtp_server/gmail.dart';
 import 'package:mailer/mailer.dart';
 
 import '../api/api_service.dart';
+import 'login.dart';
 class AccountScreen extends StatefulWidget{
   String domainName;
   AccountScreen(this.domainName);
@@ -14,12 +15,14 @@ class AccountScreen extends StatefulWidget{
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
   ApiService apiService= ApiService();
   List<dynamic> domainList = [];
   @override
   void initState() {
     setState(() {
-      createAccountApiCall();
     });
     super.initState();
   }
@@ -76,10 +79,11 @@ class _AccountScreenState extends State<AccountScreen> {
           color: const Color(0xFFEFEFEF),
         ),
       ),
-      child: const TextField(
+      child: TextField(
+        controller: _emailController,
         maxLines: 1,
         cursorColor: Color(0xFF15224F),
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             labelText: 'Email',
             border: InputBorder.none),
       ),
@@ -121,12 +125,13 @@ class _AccountScreenState extends State<AccountScreen> {
           color: const Color(0xFFEFEFEF),
         ),
       ),
-      child: const TextField(
+      child: TextField(
+        controller: _passwordController,
         maxLines: 1,
         obscureText: true,
         keyboardType: TextInputType.visiblePassword,
         cursorColor: Color(0xFF15224F),
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             labelText: 'Password',
             border: InputBorder.none),
       ),
@@ -148,32 +153,33 @@ class _AccountScreenState extends State<AccountScreen> {
           ),
         ],
       ),
-      child: const Text(
-        'Sign Up',
-        textAlign: TextAlign.center,
-      ),
+      child: InkWell(
+        onTap: (){
+          createAccountApiCall();
+        },
+        child: Text('Sign Up'),)
     );
   }
 
   void createAccountApiCall() async{
-    final accountData = await apiService.createAccountCall('imtiaz7@arxxwalls.com', 'password');
+    final accountData = await apiService.createAccountCall(_emailController.text, _passwordController.text);
     if (accountData != null) {
       // sending mail
-      sendEmail();
+      sendEmail(accountData.address.toString());
       print('data_account${accountData.address}');
-      setState(() {});
+      setState(() {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => loginScreen()));
+      });
     }
   }
 
-  void sendEmail() async{
+  void sendEmail(String address) async{
     final smtpServer = gmail('imtiaztemp020@gmail.com', 'Pa55W0rd');
     final message = Message()
-      ..from = Address('imtiazovi020@gmail.com', 'Imtiaz')
-      ..recipients.add('imtiaz111@'+widget.domainName)
-      ..subject = 'Hello testing'
-      ..text = 'testing message from sender';
-
-
+      ..from = Address('imtiaztemp020@gmail.com', 'Imtiaz')
+      ..recipients.add(address)
+      ..subject = 'Hello User'
+      ..text = 'Welcome message from sender';
     try {
       final sendReport = await send(message, smtpServer);
       print('Message sent: $sendReport');
