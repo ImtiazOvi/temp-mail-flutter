@@ -11,12 +11,14 @@ class loginScreen extends StatefulWidget{
 }
 
 class _loginScreenState extends State<loginScreen> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
   ApiService apiService= ApiService();
   List<dynamic> domainList = [];
   @override
   void initState() {
     setState(() {
-      createLoginApiCall();
     });
     super.initState();
   }
@@ -73,10 +75,11 @@ class _loginScreenState extends State<loginScreen> {
           color: const Color(0xFFEFEFEF),
         ),
       ),
-      child: const TextField(
+      child: TextField(
+        controller: _emailController,
         maxLines: 1,
         cursorColor: Color(0xFF15224F),
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             labelText: 'Email',
             border: InputBorder.none),
       ),
@@ -118,12 +121,13 @@ class _loginScreenState extends State<loginScreen> {
           color: const Color(0xFFEFEFEF),
         ),
       ),
-      child: const TextField(
+      child: TextField(
+        controller: _passwordController,
         maxLines: 1,
         obscureText: true,
         keyboardType: TextInputType.visiblePassword,
         cursorColor: Color(0xFF15224F),
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             labelText: 'Password',
             border: InputBorder.none),
       ),
@@ -147,19 +151,21 @@ class _loginScreenState extends State<loginScreen> {
       ),
       child: InkWell(
         onTap: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MessageScreen()));
+          createLoginApiCall();
         },
         child: Text('Login'),)
     );
   }
 
   void createLoginApiCall() async{
-    final loginData = await apiService.loginCall('imtiaz6@arxxwalls.com', 'password');
+    final loginData = await apiService.loginCall(_emailController.text, _passwordController.text);
     if (loginData != null) {
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       await sharedPreferences.setString('token', 'Bearer ${loginData.token}');
       print('loginData${loginData.id}');
-      setState(() {});
+      setState(() {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MessageScreen()));
+      });
     }
   }
 
