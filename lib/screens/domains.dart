@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:temp_mail_flutter/account.dart';
-import 'api_service.dart';
+import '../api/api_service.dart';
+import 'account.dart';
 import 'login.dart';
 class DomainScreen extends StatefulWidget {
 

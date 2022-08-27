@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:mailer/smtp_server/gmail.dart';
-import 'api_service.dart';
-import 'package:mailer/mailer.dart';
-class AccountScreen extends StatefulWidget{
-  String domainName;
-  AccountScreen(this.domainName);
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../api/api_service.dart';
+import 'message.dart';
+class loginScreen extends StatefulWidget{
 
   @override
-  _AccountScreenState createState() => _AccountScreenState();
+  _loginScreenState createState() => _loginScreenState();
 
 }
 
-class _AccountScreenState extends State<AccountScreen> {
+class _loginScreenState extends State<loginScreen> {
   ApiService apiService= ApiService();
   List<dynamic> domainList = [];
   @override
   void initState() {
     setState(() {
-      createAccountApiCall();
+      createLoginApiCall();
     });
     super.initState();
   }
@@ -51,7 +49,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 ),
 
                 //sign in button & sign in with text
-                signUpButton(size),
+                loginButton(size),
                 SizedBox(
                   height: size.height * 0.02,
                 )
@@ -90,13 +88,13 @@ class _AccountScreenState extends State<AccountScreen> {
       TextSpan(
         children: [
           TextSpan(
-            text: 'Create ',
+            text: 'Login ',
             style: TextStyle(
               fontWeight: FontWeight.w800,
             ),
           ),
           TextSpan(
-            text: 'Account',
+            text: 'Here',
             style: TextStyle(
               color: Color(0xFFFE9879),
               fontWeight: FontWeight.w800,
@@ -132,7 +130,7 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
-  Widget signUpButton(Size size) {
+  Widget loginButton(Size size) {
     return Container(
       alignment: Alignment.center,
       height: size.height / 11,
@@ -147,43 +145,23 @@ class _AccountScreenState extends State<AccountScreen> {
           ),
         ],
       ),
-      child: const Text(
-        'Sign Up',
-        textAlign: TextAlign.center,
-      ),
+      child: InkWell(
+        onTap: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MessageScreen()));
+        },
+        child: Text('Login'),)
     );
   }
 
-  void createAccountApiCall() async{
+  void createLoginApiCall() async{
     print('>>>>>>>>> '+ 'go');
-    final accountData = await apiService.createAccountCall('imtiaz7@arxxwalls.com', 'password');
-    if (accountData != null) {
-      // sending mail
-      sendEmail();
-      print('data_account'+ accountData.address.toString());
+    final loginData = await apiService.loginCall('imtiaz6@arxxwalls.com', 'password');
+    if (loginData != null) {
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      await sharedPreferences.setString('token', 'Bearer '+loginData.token.toString());
+      print('loginData'+ loginData.id.toString());
       setState(() {});
     }
   }
 
-  void sendEmail() async{
-    print('>>>>>>>>> '+ 'go');
-    final smtpServer = gmail('imtiaztemp020@gmail.com', 'Pa55W0rd');
-
-    final message = Message()
-      ..from = Address('imtiazovi020@gmail.com', 'Imtiaz')
-      ..recipients.add('imtiaz111@'+widget.domainName)
-      ..subject = 'Hello testing'
-      ..text = 'testing message from sender';
-
-
-    try {
-      final sendReport = await send(message, smtpServer);
-      print('Message sent: ' + sendReport.toString());
-    } on MailerException catch (e) {
-      print('Message not sent.');
-      for (var p in e.problems) {
-        print('Problem: ${p.code}: ${p.msg}');
-      }
-    }
-  }
 }

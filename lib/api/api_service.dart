@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
-import 'package:temp_mail_flutter/loginResponse.dart';
+import '../model/createAccountRes.dart';
+import '../model/loginResponse.dart';
 
-import 'createAccountRes.dart';
 class ApiService{
   String baseUrl = "https://api.mail.tm/";
 

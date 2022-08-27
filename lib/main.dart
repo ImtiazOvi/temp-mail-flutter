@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:temp_mail_flutter/login.dart';
-import 'package:temp_mail_flutter/account.dart';
-import 'package:temp_mail_flutter/domains.dart';
+import 'package:temp_mail_flutter/screens/domains.dart';
 
 void main() {
   runApp(const MyApp());
