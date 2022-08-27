@@ -1,16 +1,45 @@
-# temp_mail_flutter
-
+# Temp Mail Flutter
 A new Flutter project.
 
-## Getting Started
+# Latest branch
+- master
 
-This project is a starting point for a Flutter application.
+# How its
+ - Fetch our domain names.
+ - Create a new account by using our domain names.
+ - Login with credentials and get a token
+ - Using token we can get the message list
+ 
+ # Screen -
+- Domains - Call domains api for getting domain list
+- Create Account - Using given domain name create account with eamil & password.
+- Login - Login registred user and get a Bearer Token and save that token in Sharedpreferences for next auth api calling.
+- Message - Using Bearer Token call message api then get the message list
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Used technologies
+ - Flutter 
+ - Dart
+ - State Management
+ - Dio / Http 
+ - Sharedpreferences
+ - Email sender smtp server
+ 
+ # Screen UI Screenshots:
+ - Domains
+ ![Domains_Screen](https://user-images.githubusercontent.com/55427038/187020132-5c01635c-46ac-41c8-b989-57b39db1e804.jpeg)
+ 
+ - Create Account
+ ![CreateAccount_Screen](https://user-images.githubusercontent.com/55427038/187020149-05cfd8f0-c0cf-4296-853b-8a206db8be3e.jpeg)
+ 
+ - Login 
+ ![Login_Screen](https://user-images.githubusercontent.com/55427038/187020170-643fdbbe-5dbf-453b-ab09-0ab889c692e4.jpeg)
+ 
+ - Messages
+ ![Message_Scrren](https://user-images.githubusercontent.com/55427038/187020207-ed42a942-be73-41fc-a2da-b881194ad045.jpeg)
+ 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+ 
+ 
+
+
