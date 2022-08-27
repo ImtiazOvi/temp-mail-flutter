@@ -49,6 +49,9 @@ class _DomainScreenState extends State<DomainScreen> {
                           child: ListTile(
                             title: Text("Domain: "+domainList[index]['domain']),
                             subtitle: Text("Id: "+domainList[index]['id']),
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => AccountScreen(domainList[index]['domain']!)));
+                            },
                           ),
                         ),
                   )
@@ -78,7 +81,7 @@ class _DomainScreenState extends State<DomainScreen> {
       ),
     child: InkWell(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AccountScreen(domainName!)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => loginScreen()));
       },
       child: const Text(
         'Login Account',
